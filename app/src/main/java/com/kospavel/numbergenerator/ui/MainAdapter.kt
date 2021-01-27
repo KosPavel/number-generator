@@ -3,6 +3,7 @@ package com.kospavel.numbergenerator.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kospavel.numbergenerator.Content
 import com.kospavel.numbergenerator.LoadNext
@@ -72,6 +73,21 @@ class MainAdapter(private val more: () -> Unit, private val less: () -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(number: com.kospavel.numbergenerator.Number) {
             binding.numberValue.text = number.value.toString()
+            if (number.color) {
+                binding.numberBackground.setBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.numberBackground.context,
+                        R.color.black
+                    )
+                )
+            } else {
+                binding.numberBackground.setBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.numberBackground.context,
+                        R.color.white
+                    )
+                )
+            }
         }
     }
 

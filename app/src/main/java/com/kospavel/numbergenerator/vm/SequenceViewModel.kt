@@ -24,7 +24,7 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
                 result.add(Number(i, color))
                 color = !color
             }
-            result.add(LoadNext())
+//            result.add(LoadNext())
             _items.value = result
         }.addToDisposable()
     }
@@ -37,7 +37,7 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
                 result.add(Number(i, color))
                 color = !color
             }
-            result.add(LoadPrevious())
+//            result.add(0, LoadPrevious())
             _items.value = result
         }.addToDisposable()
     }
