@@ -2,6 +2,7 @@ package com.kospavel.numbergenerator.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.base.BaseFragment
@@ -20,6 +21,18 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
         super.onViewCreated(view, savedInstanceState)
         val type: SequenceType = requireArguments().getSerializable(TYPE_KEY) as SequenceType
         vm = SequenceViewModelFactory(type).create(SequenceViewModel::class.java)
+
+        val mainAdapter = MainAdapter(more = { vm.loadMore() }, less = { vm.loadLess() })
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = mainAdapter
+            setHasFixedSize(true)
+        }
+
+        vm.items.observe(viewLifecycleOwner) {
+            mainAdapter.items = it
+            mainAdapter.notifyDataSetChanged()
+        }
     }
 
     companion object {

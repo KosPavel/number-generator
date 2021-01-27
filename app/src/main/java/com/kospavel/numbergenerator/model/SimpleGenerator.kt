@@ -11,14 +11,16 @@ class SimpleGenerator : Generator {
                 var simple = true
                 lastSimple += 1
                 for (i in 2 until lastSimple) {
-                    if (lastSimple % i == 0 ) {
+                    if (lastSimple % i == 0) {
                         simple = false
                         break
                     }
                 }
                 if (simple) {
                     numbers.add(lastSimple)
-                    numbers.removeFirst()
+                    if (numbers.size >= CHUNK) {
+                        numbers.removeFirst()
+                    }
                     break
                 }
             }
@@ -46,6 +48,9 @@ class SimpleGenerator : Generator {
                 }
                 if (simple) {
                     numbers.add(0, firstSimple)
+                    if (numbers.size >= SimpleGenerator.CHUNK) {
+                        numbers.removeLast()
+                    }
                     break
                 }
             }
@@ -54,7 +59,7 @@ class SimpleGenerator : Generator {
     }
 
     companion object {
-        private const val CHUNK = 50
+        private const val CHUNK = 200
         private var instance: SimpleGenerator? = null
         fun get(): SimpleGenerator {
             if (instance == null) {

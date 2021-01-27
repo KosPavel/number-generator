@@ -5,7 +5,7 @@ import com.kospavel.numbergenerator.model.FibonacciGenerator
 import com.kospavel.numbergenerator.model.Generator
 import com.kospavel.numbergenerator.model.SimpleGenerator
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.core.ObservableOnSubscribe
 
 class DataRepository(type: SequenceType) {
 
@@ -15,15 +15,17 @@ class DataRepository(type: SequenceType) {
     }
 
     fun loadMore(): Observable<List<Int>> {
-        return Observable.just(
-            sequenceGenerator.next()
-        )
+        return Observable.create(ObservableOnSubscribe {
+            it.onNext(sequenceGenerator.next())
+            it.onComplete()
+        })
     }
 
     fun loadLess(): Observable<List<Int>> {
-        return Observable.just(
-            sequenceGenerator.prev()
-        ).subscribeOn(Schedulers.computation())
+        return Observable.create(ObservableOnSubscribe {
+            it.onNext(sequenceGenerator.prev())
+            it.onComplete()
+        })
     }
 
 }

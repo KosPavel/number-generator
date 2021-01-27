@@ -7,7 +7,8 @@ enum class SequenceType(@StringRes val nameId: Int) {
     FIBONACCI(R.string.fibonacci_numbers_tab_title),
 }
 
-data class Number(val value: Int) : Content()
-class LoadMore : Content()
+data class Number(val value: Int, val color: Boolean) : Content()
+class LoadNext : Content()
+class LoadPrevious : Content()
 
 open class Content

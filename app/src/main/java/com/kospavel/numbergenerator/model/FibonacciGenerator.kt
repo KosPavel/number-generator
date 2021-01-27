@@ -1,7 +1,5 @@
 package com.kospavel.numbergenerator.model
 
-import android.util.Log
-
 class FibonacciGenerator : Generator {
 
     private val numbers = mutableListOf<Int>(1, 1, 2)
@@ -13,7 +11,9 @@ class FibonacciGenerator : Generator {
             numbers.add(
                 new
             )
-            numbers.removeFirst()
+            if (numbers.size >= CHUNK) {
+                numbers.removeFirst()
+            }
         }
         return numbers
     }
@@ -27,13 +27,15 @@ class FibonacciGenerator : Generator {
                 0,
                 numbers[0] + numbers[1]
             )
-            numbers.removeLast()
+            if (numbers.size >= CHUNK) {
+                numbers.removeLast()
+            }
         }
         return numbers
     }
 
     companion object {
-        private const val CHUNK = 50
+        private const val CHUNK = 200
         private var instance: FibonacciGenerator? = null
         fun get(): FibonacciGenerator {
             if (instance == null) {
