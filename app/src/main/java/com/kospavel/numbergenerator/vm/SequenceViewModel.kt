@@ -1,9 +1,8 @@
 package com.kospavel.numbergenerator.vm
 
 import androidx.lifecycle.MutableLiveData
-import com.kospavel.numbergenerator.Content
+import com.kospavel.numbergenerator.*
 import com.kospavel.numbergenerator.Number
-import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.base.BaseViewModel
 import com.kospavel.numbergenerator.repository.DataRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -23,6 +22,7 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
                 result.add(Number(i, color))
                 color = !color
             }
+            result.add(LoadNext())
             result
         }.observeOn(AndroidSchedulers.mainThread()).subscribeBy {
             _items.value = it
@@ -37,6 +37,7 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
                 result.add(Number(i, color))
                 color = !color
             }
+            result.add(0, LoadPrevious())
             result
         }.observeOn(AndroidSchedulers.mainThread()).subscribeBy {
             _items.value = it
