@@ -1,5 +1,6 @@
 package com.kospavel.numbergenerator.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -54,6 +55,9 @@ class MainAdapter(private val more: () -> Unit, private val less: () -> Unit) :
             }
             3 -> {
                 less()
+            }
+            else -> {
+                Log.i("qwerty", "else")
             }
         }
     }
