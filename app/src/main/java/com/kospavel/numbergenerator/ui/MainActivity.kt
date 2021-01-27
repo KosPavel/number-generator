@@ -3,6 +3,7 @@ package com.kospavel.numbergenerator.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
+import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

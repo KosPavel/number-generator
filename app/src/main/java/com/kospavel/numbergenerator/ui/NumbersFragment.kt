@@ -3,6 +3,7 @@ package com.kospavel.numbergenerator.ui
 import android.os.Bundle
 import android.view.View
 import com.kospavel.numbergenerator.R
+import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.base.BaseFragment
 import com.kospavel.numbergenerator.databinding.FragmentRecyclerViewBinding
 import com.kospavel.numbergenerator.vm.SequenceViewModel

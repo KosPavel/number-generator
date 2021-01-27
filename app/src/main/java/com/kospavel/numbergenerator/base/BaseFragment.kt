@@ -1,14 +1,12 @@
 package com.kospavel.numbergenerator.base
 
 import android.os.Bundle
-import android.renderscript.ScriptGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.kospavel.numbergenerator.ui.SequenceType
 
 open class BaseFragment<T : ViewBinding>(
     @LayoutRes layoutId: Int,

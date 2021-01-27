@@ -1,9 +1,9 @@
 package com.kospavel.numbergenerator.vm
 
-import androidx.lifecycle.ViewModel
-import com.kospavel.numbergenerator.ui.SequenceType
+import com.kospavel.numbergenerator.SequenceType
+import com.kospavel.numbergenerator.base.BaseViewModel
 
-class SequenceViewModel(private val type: SequenceType) : ViewModel() {
+class SequenceViewModel(type: SequenceType) : BaseViewModel(type) {
 
 
 

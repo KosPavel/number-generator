@@ -2,7 +2,7 @@ package com.kospavel.numbergenerator.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.kospavel.numbergenerator.ui.SequenceType
+import com.kospavel.numbergenerator.SequenceType
 
 
 class SequenceViewModelFactory(private val type: SequenceType) :
