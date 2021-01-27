@@ -1,9 +1,9 @@
 package com.kospavel.numbergenerator.vm
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.kospavel.numbergenerator.*
+import com.kospavel.numbergenerator.Content
 import com.kospavel.numbergenerator.Number
+import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.base.BaseViewModel
 import com.kospavel.numbergenerator.repository.DataRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -16,29 +16,30 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
     val items = _items
 
     fun loadMore() {
-        repo.loadMore().observeOn(AndroidSchedulers.mainThread()).subscribeBy {
+        repo.loadMore().map<List<Content>> {
             val result = mutableListOf<Content>()
-            Log.i("qwerty", it.toString())
             var color = true
             for (i in it) {
                 result.add(Number(i, color))
                 color = !color
             }
-//            result.add(LoadNext())
-            _items.value = result
+            result
+        }.observeOn(AndroidSchedulers.mainThread()).subscribeBy {
+            _items.value = it
         }.addToDisposable()
     }
 
     fun loadLess() {
-        repo.loadLess().observeOn(AndroidSchedulers.mainThread()).subscribeBy {
+        repo.loadLess().map<List<Content>> {
             val result = mutableListOf<Content>()
             var color = true
             for (i in it) {
                 result.add(Number(i, color))
                 color = !color
             }
-//            result.add(0, LoadPrevious())
-            _items.value = result
+            result
+        }.observeOn(AndroidSchedulers.mainThread()).subscribeBy {
+            _items.value = it
         }.addToDisposable()
     }
 

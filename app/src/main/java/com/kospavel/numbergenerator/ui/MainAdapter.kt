@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kospavel.numbergenerator.Content
 import com.kospavel.numbergenerator.LoadNext
 import com.kospavel.numbergenerator.LoadPrevious
+import com.kospavel.numbergenerator.Number
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.databinding.ItemNumberViewBinding
 
@@ -57,14 +58,14 @@ class MainAdapter(private val more: () -> Unit, private val less: () -> Unit) :
                 less()
             }
             else -> {
-                Log.i("qwerty", "else")
+                Log.i("qwerty", "${items[position]}")
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is Number -> 1
+            is com.kospavel.numbergenerator.Number -> 1
             is LoadNext -> 2
             is LoadPrevious -> 3
             else -> 0
