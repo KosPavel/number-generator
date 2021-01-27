@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Number Generator</string>
+    <string name="simple_numbers_tab_title">Простые числа</string>
+    <string name="fibonacci_numbers_tab_title">Числа Фибоначчи</string>
+</resources>
