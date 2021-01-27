@@ -1,15 +1,21 @@
 package com.kospavel.numbergenerator.base
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kospavel.numbergenerator.Content
-import com.kospavel.numbergenerator.SequenceType
-import com.kospavel.numbergenerator.repository.DataRepository
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 
-open class BaseViewModel(type: SequenceType) : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
-    protected val repo = DataRepository(type)
-    protected val _items = MutableLiveData<List<Content>>()
-    val items = _items
+    private val disposables = CompositeDisposable()
+
+    protected fun Disposable.addToDisposable(): Disposable {
+        disposables.add(this)
+        return this
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposables.dispose()
+    }
 
 }

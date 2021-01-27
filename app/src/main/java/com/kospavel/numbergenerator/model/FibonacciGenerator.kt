@@ -1,5 +1,7 @@
 package com.kospavel.numbergenerator.model
 
+import android.util.Log
+
 class FibonacciGenerator : Generator {
 
     private val numbers = mutableListOf<Int>(1, 1, 2)
@@ -7,8 +9,9 @@ class FibonacciGenerator : Generator {
     override fun next(): List<Int> {
         for (i in 0..FibonacciGenerator.CHUNK) {
             val maxIndex = numbers.lastIndex
+            val new = numbers[maxIndex - 1] + numbers[maxIndex]
             numbers.add(
-                numbers[numbers[maxIndex - 1] + numbers[maxIndex]]
+                new
             )
             numbers.removeFirst()
         }
