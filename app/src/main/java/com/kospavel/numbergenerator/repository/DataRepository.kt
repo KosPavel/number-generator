@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Observable
 
 class DataRepository(type: SequenceType) {
 
-//    private val items
+    private var items = mutableListOf<Int>()
 
     private val sequenceGenerator: Generator = when (type) {
         SequenceType.PRIME -> SimpleGenerator.get()
@@ -17,13 +17,15 @@ class DataRepository(type: SequenceType) {
 
     fun loadMore(): Observable<List<Int>> {
         return Observable.fromCallable {
-            sequenceGenerator.next()
+            items = sequenceGenerator.next().toMutableList()
+            items
         }
     }
 
     fun loadLess(): Observable<List<Int>> {
         return Observable.fromCallable {
-            sequenceGenerator.prev()
+            items = sequenceGenerator.prev().toMutableList()
+            items
         }
     }
 

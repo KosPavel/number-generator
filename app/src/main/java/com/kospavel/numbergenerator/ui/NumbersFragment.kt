@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.base.BaseFragment
@@ -27,7 +26,8 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
         vmf = SequenceViewModelFactory(type)
         vm = ViewModelProvider(this, vmf).get(SequenceViewModel::class.java)
 
-        val mainAdapter = MainAdapter(more = { vm.loadMore() }, less = { vm.loadLess() })
+        val mainAdapter =
+            MainAdapter(loadNext = { vm.loadNext() }, loadPrevious = { vm.loadPrevious() })
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = mainAdapter

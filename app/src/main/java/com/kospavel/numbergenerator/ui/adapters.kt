@@ -14,7 +14,7 @@ import com.kospavel.numbergenerator.LoadPrevious
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.databinding.ItemNumberViewBinding
 
-class MainAdapter(private val more: () -> Unit, private val less: () -> Unit) :
+class MainAdapter(private val loadNext: () -> Unit, private val loadPrevious: () -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var items = emptyList<Content>()
@@ -53,10 +53,10 @@ class MainAdapter(private val more: () -> Unit, private val less: () -> Unit) :
                 }
             }
             2 -> {
-                more()
+                loadNext()
             }
             3 -> {
-                less()
+                loadPrevious()
             }
             else -> {
                 Log.i("qwerty", "${items[position]}")
