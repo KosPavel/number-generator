@@ -14,14 +14,13 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
     private val repo = DataRepository(type)
     private val _items = MutableLiveData<List<Content>>(emptyList())
     val items = _items
+    private val chessColorResolver = ChessColorResolver()
 
     fun loadMore() {
         repo.loadMore().map<List<Content>> {
             val result = mutableListOf<Content>()
-            var white = true
             for (i in it) {
-                result.add(Number(i, white))
-                white = !white
+                result.add(Number(i, chessColorResolver.isWhite()))
             }
             result.add(LoadNext())
             result

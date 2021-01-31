@@ -80,17 +80,17 @@ class MainAdapter(private val more: () -> Unit, private val less: () -> Unit) :
         fun bind(number: com.kospavel.numbergenerator.Number) {
             binding.numberValue.text = number.value.toString()
             if (number.white) {
-                binding.numberBackground.setBackgroundColor(
-                    ContextCompat.getColor(
-                        binding.numberBackground.context,
-                        R.color.black
-                    )
-                )
-            } else {
-                binding.numberBackground.setBackgroundColor(
+                binding.numberBackground.setCardBackgroundColor(
                     ContextCompat.getColor(
                         binding.numberBackground.context,
                         R.color.white
+                    )
+                )
+            } else {
+                binding.numberBackground.setCardBackgroundColor(
+                    ContextCompat.getColor(
+                        binding.numberBackground.context,
+                        R.color.black
                     )
                 )
             }

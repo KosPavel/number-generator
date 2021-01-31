@@ -3,6 +3,7 @@ package com.kospavel.numbergenerator.ui
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.SequenceType
@@ -28,7 +29,7 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
 
         val mainAdapter = MainAdapter(more = { vm.loadMore() }, less = { vm.loadLess() })
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = mainAdapter
             setHasFixedSize(true)
         }
