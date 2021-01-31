@@ -15,14 +15,14 @@ class DataRepository(type: SequenceType) {
         SequenceType.FIBONACCI -> FibonacciGenerator.get()
     }
 
-    fun loadMore(): Observable<List<Int>> {
+    fun loadNext(chunk: Int): Observable<List<Int>> {
         return Observable.fromCallable {
             items = sequenceGenerator.next().toMutableList()
             items
         }
     }
 
-    fun loadLess(): Observable<List<Int>> {
+    fun loadPrev(chunk: Int): Observable<List<Int>> {
         return Observable.fromCallable {
             items = sequenceGenerator.prev().toMutableList()
             items
