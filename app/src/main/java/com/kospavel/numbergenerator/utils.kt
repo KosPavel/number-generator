@@ -7,9 +7,15 @@ enum class SequenceType(@StringRes val nameId: Int) {
     FIBONACCI(R.string.fibonacci_numbers_tab_title),
 }
 
-data class Number(val value: Int, val white: Boolean) : Content()
-class LoadNext : Content()
-class LoadPrevious : Content()
+data class Number(
+    var value: Int,
+    var white: Boolean,
+    var loadNext: Boolean = false,
+    var loadPrev: Boolean = false
+) : Content()
+
+//class LoadNext : Content()
+//class LoadPrevious : Content()
 
 open class Content
 
@@ -22,4 +28,12 @@ class ChessColorResolver {
         }
         return count % 2 == 0
     }
+}
+
+fun MutableList<Content>.addLoads(): MutableList<Content> {
+    this.apply {
+//        add(0, LoadPrevious())
+//        add(LoadNext())
+    }
+    return this
 }

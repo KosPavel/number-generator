@@ -3,29 +3,26 @@ package com.kospavel.numbergenerator.repository
 import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.model.FibonacciGenerator
 import com.kospavel.numbergenerator.model.Generator
-import com.kospavel.numbergenerator.model.SimpleGenerator
+import com.kospavel.numbergenerator.model.PrimeGenerator
 import io.reactivex.rxjava3.core.Observable
 
 class DataRepository(type: SequenceType) {
 
-    private var items = mutableListOf<Int>()
-
     private val sequenceGenerator: Generator = when (type) {
-        SequenceType.PRIME -> SimpleGenerator.get()
+        SequenceType.PRIME -> PrimeGenerator.get()
         SequenceType.FIBONACCI -> FibonacciGenerator.get()
     }
 
-    fun loadNext(chunk: Int): Observable<List<Int>> {
+    fun loadNext(sequence: List<Int>?, chunk: Int): Observable<List<Int>> {
         return Observable.fromCallable {
-            items = sequenceGenerator.next().toMutableList()
-            items
+            sequenceGenerator.next(sequence, chunk).toMutableList()
         }
     }
 
-    fun loadPrev(chunk: Int): Observable<List<Int>> {
+    fun loadPrev(sequence: List<Int>?, chunk: Int): Observable<List<Int>> {
         return Observable.fromCallable {
-            items = sequenceGenerator.prev().toMutableList()
-            items
+            val result = sequenceGenerator.prev(sequence, chunk)
+            result.reversed()
         }
     }
 

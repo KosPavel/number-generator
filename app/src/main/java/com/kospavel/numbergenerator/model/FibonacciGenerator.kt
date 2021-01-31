@@ -2,40 +2,82 @@ package com.kospavel.numbergenerator.model
 
 class FibonacciGenerator : Generator {
 
-    private val numbers = mutableListOf<Int>(1, 1, 2)
-
-    override fun next(): List<Int> {
-        for (i in 0..FibonacciGenerator.CHUNK) {
-            val maxIndex = numbers.lastIndex
-            val new = numbers[maxIndex - 1] + numbers[maxIndex]
-            numbers.add(
-                new
-            )
-            if (numbers.size >= CHUNK) {
-                numbers.removeFirst()
+    override fun next(sequence: List<Int>?, chunk: Int): List<Int> { //todo ready
+        return if (sequence != null && sequence.isNotEmpty()) {
+            val result = mutableListOf<Int>()
+            for (i in 0..chunk) {
+                when (result.size) {
+                    0 -> {
+                        result.add(sequence.last() + sequence[sequence.lastIndex - 1])
+                    }
+                    1 -> {
+                        result.add(sequence.last() + result.last())
+                    }
+                    else -> {
+                        result.add(
+                            result.last() + result[result.lastIndex - 1]
+                        )
+                    }
+                }
             }
+            return result
+        } else {
+            generateBase()
         }
-        return numbers
     }
 
-    override fun prev(): List<Int> {
-        for (i in 0..FibonacciGenerator.CHUNK) {
-            if (numbers.first() == 1 && numbers[1] == 1) {
-                break
+    override fun prev(sequence: List<Int>?, chunk: Int): List<Int> { //TODO ready
+        return if (sequence != null) {
+            if (sequence[0] == 1 && sequence[1] == 1) {
+                return emptyList()
+            } else {
+                val result = mutableListOf<Int>()
+                for (i in 0..chunk) {
+                    when (result.size) {
+                        0 -> {
+                            result.add(
+                                sequence[1] - sequence[0]
+                            )
+                            if (sequence[0] == 1 && result[0] == 1) {
+                                break
+                            }
+                        }
+                        1 -> {
+                            result.add(
+                                sequence[0] - result[0]
+                            )
+                            if (result[0] == 1 && result[1] == 1) {
+                                break
+                            }
+                        }
+                        else -> {
+                            result.add(
+                                result.last() + result[result.lastIndex - 1]
+                            )
+                            if (result.last() == 1 && result[result.lastIndex - 1] == 1) {
+                                break
+                            }
+                        }
+                    }
+                }
+                return result
             }
-            numbers.add(
-                0,
-                numbers[0] + numbers[1]
-            )
-            if (numbers.size >= CHUNK) {
-                numbers.removeLast()
-            }
+        } else {
+            generateBase()
         }
-        return numbers
+    }
+
+    override fun generateBase(): List<Int> {
+        val base = mutableListOf(1, 1, 2)
+        for (i in 0..50) {
+            base.add(
+                base.last() + base[base.lastIndex - 1]
+            )
+        }
+        return base
     }
 
     companion object {
-        private const val CHUNK = 200
         private var instance: FibonacciGenerator? = null
         fun get(): FibonacciGenerator {
             if (instance == null) {
@@ -44,4 +86,5 @@ class FibonacciGenerator : Generator {
             return instance!!
         }
     }
+
 }
