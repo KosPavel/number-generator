@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.kospavel.numbergenerator.Content
-import com.kospavel.numbergenerator.LoadNext
-import com.kospavel.numbergenerator.LoadPrevious
+//import com.kospavel.numbergenerator.LoadNext
+//import com.kospavel.numbergenerator.LoadPrevious
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.databinding.ItemNumberViewBinding
 
@@ -50,14 +50,20 @@ class MainAdapter(private val loadNext: () -> Unit, private val loadPrevious: ()
                     val number = items[position] as com.kospavel.numbergenerator.Number
                     holder as NumberViewHolder
                     holder.bind(number = number)
+                    if (number.loadNext) {
+                        loadNext()
+                    }
+                    if (number.loadPrev) {
+                        loadPrevious()
+                    }
                 }
             }
-            2 -> {
-                loadNext()
-            }
-            3 -> {
-                loadPrevious()
-            }
+//            2 -> {
+//                loadNext()
+//            }
+//            3 -> {
+//                loadPrevious()
+//            }
             else -> {
                 Log.i("qwerty", "${items[position]}")
             }
@@ -67,8 +73,8 @@ class MainAdapter(private val loadNext: () -> Unit, private val loadPrevious: ()
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
             is com.kospavel.numbergenerator.Number -> 1
-            is LoadNext -> 2
-            is LoadPrevious -> 3
+//            is LoadNext -> 2
+//            is LoadPrevious -> 3
             else -> 0
         }
     }
@@ -79,21 +85,17 @@ class MainAdapter(private val loadNext: () -> Unit, private val loadPrevious: ()
         RecyclerView.ViewHolder(binding.root) {
         fun bind(number: com.kospavel.numbergenerator.Number) {
             binding.numberValue.text = number.value.toString()
-            if (number.white) {
-                binding.numberBackground.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        binding.numberBackground.context,
-                        R.color.white
-                    )
-                )
+            val color = if (number.white) {
+                R.color.white
             } else {
-                binding.numberBackground.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        binding.numberBackground.context,
-                        R.color.black
-                    )
-                )
+                R.color.black
             }
+            binding.numberBackground.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    binding.numberBackground.context,
+                    color
+                )
+            )
         }
     }
 

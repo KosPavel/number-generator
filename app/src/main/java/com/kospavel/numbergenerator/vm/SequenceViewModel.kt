@@ -9,6 +9,7 @@ import com.kospavel.numbergenerator.repository.DataRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.math.BigDecimal
 
 class SequenceViewModel(type: SequenceType) : BaseViewModel() {
 
