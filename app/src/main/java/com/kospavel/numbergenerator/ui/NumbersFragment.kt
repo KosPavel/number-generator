@@ -22,9 +22,9 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val type: SequenceType = requireArguments().getSerializable(TYPE_KEY) as SequenceType
-//        vm = SequenceViewModelFactory(type).create(SequenceViewModel::class.java)
+
         vmf = SequenceViewModelFactory(type)
-        vm = ViewModelProvider(requireActivity(), vmf).get(SequenceViewModel::class.java)
+        vm = ViewModelProvider(this, vmf).get(SequenceViewModel::class.java)
 
         val mainAdapter = MainAdapter(more = { vm.loadMore() }, less = { vm.loadLess() })
         binding.recyclerView.apply {

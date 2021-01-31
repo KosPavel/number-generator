@@ -47,7 +47,7 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
 
     init {
         loadMore()
-        Log.i("qwerty", "VM init")
+        Log.i("qwerty", "VM init with type $type")
     }
 
 }
