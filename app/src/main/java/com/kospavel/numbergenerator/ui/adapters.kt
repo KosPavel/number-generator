@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.kospavel.numbergenerator.Content
 import com.kospavel.numbergenerator.LoadNext
 import com.kospavel.numbergenerator.LoadPrevious
-import com.kospavel.numbergenerator.Number
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.databinding.ItemNumberViewBinding
 
@@ -78,7 +79,7 @@ class MainAdapter(private val more: () -> Unit, private val less: () -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(number: com.kospavel.numbergenerator.Number) {
             binding.numberValue.text = number.value.toString()
-            if (number.color) {
+            if (number.white) {
                 binding.numberBackground.setBackgroundColor(
                     ContextCompat.getColor(
                         binding.numberBackground.context,
@@ -99,4 +100,16 @@ class MainAdapter(private val more: () -> Unit, private val less: () -> Unit) :
     class LoadMoreViewHolder(viewGroup: ViewGroup) : RecyclerView.ViewHolder(viewGroup)
     class LoadLessViewHolder(viewGroup: ViewGroup) : RecyclerView.ViewHolder(viewGroup)
 
+}
+
+class SequencesCollectionAdapter(
+    activity: MainActivity,
+    private val pages: List<Fragment>
+) : FragmentStateAdapter(activity) {
+
+    override fun getItemCount(): Int = pages.size
+
+    override fun createFragment(position: Int): Fragment {
+        return pages[position]
+    }
 }

@@ -1,5 +1,6 @@
 package com.kospavel.numbergenerator.vm
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.kospavel.numbergenerator.*
 import com.kospavel.numbergenerator.Number
@@ -17,10 +18,10 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
     fun loadMore() {
         repo.loadMore().map<List<Content>> {
             val result = mutableListOf<Content>()
-            var color = true
+            var white = true
             for (i in it) {
-                result.add(Number(i, color))
-                color = !color
+                result.add(Number(i, white))
+                white = !white
             }
             result.add(LoadNext())
             result
@@ -46,6 +47,7 @@ class SequenceViewModel(type: SequenceType) : BaseViewModel() {
 
     init {
         loadMore()
+        Log.i("qwerty", "VM init")
     }
 
 }

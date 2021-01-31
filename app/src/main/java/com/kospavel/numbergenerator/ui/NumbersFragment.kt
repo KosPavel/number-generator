@@ -2,6 +2,7 @@ package com.kospavel.numbergenerator.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.SequenceType
@@ -16,11 +17,14 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
 ) {
 
     private lateinit var vm: SequenceViewModel
+    private lateinit var vmf: SequenceViewModelFactory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val type: SequenceType = requireArguments().getSerializable(TYPE_KEY) as SequenceType
-        vm = SequenceViewModelFactory(type).create(SequenceViewModel::class.java)
+//        vm = SequenceViewModelFactory(type).create(SequenceViewModel::class.java)
+        vmf = SequenceViewModelFactory(type)
+        vm = ViewModelProvider(requireActivity(), vmf).get(SequenceViewModel::class.java)
 
         val mainAdapter = MainAdapter(more = { vm.loadMore() }, less = { vm.loadLess() })
         binding.recyclerView.apply {
@@ -37,18 +41,13 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
 
     companion object {
         private const val TYPE_KEY = "type"
-        private val instances = mutableMapOf<String, NumbersFragment>()
 
-        fun newFragment(type: SequenceType): NumbersFragment {
-            if (!instances.containsKey(type.name)) {
-                val instance = NumbersFragment().apply {
-                    arguments = Bundle().apply {
-                        putSerializable(TYPE_KEY, type)
-                    }
+        fun getFragment(type: SequenceType): NumbersFragment {
+            return NumbersFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(TYPE_KEY, type)
                 }
-                instances[type.name] = instance
             }
-            return instances[type.name]!!
         }
     }
 
