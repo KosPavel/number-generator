@@ -8,7 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.kospavel.numbergenerator.Content
+//import com.kospavel.numbergenerator.Content
+import com.kospavel.numbergenerator.Number
 //import com.kospavel.numbergenerator.LoadNext
 //import com.kospavel.numbergenerator.LoadPrevious
 import com.kospavel.numbergenerator.R
@@ -17,7 +18,7 @@ import com.kospavel.numbergenerator.databinding.ItemNumberViewBinding
 class MainAdapter(private val loadNext: () -> Unit, private val loadPrevious: () -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var items = emptyList<Content>()
+    var items = emptyList<Number>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -84,8 +85,8 @@ class MainAdapter(private val loadNext: () -> Unit, private val loadPrevious: ()
     class NumberViewHolder(private val binding: ItemNumberViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(number: com.kospavel.numbergenerator.Number) {
-            binding.numberValue.text = number.value.toString()
-            val color = if (number.white) {
+            binding.numberValue.text = String.format(number.value.toString())
+            val color = if (number.white!!) {
                 R.color.white
             } else {
                 R.color.black

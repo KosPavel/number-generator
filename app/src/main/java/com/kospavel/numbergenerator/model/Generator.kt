@@ -1,9 +1,11 @@
 package com.kospavel.numbergenerator.model
 
+import java.math.BigInteger
+
 interface Generator {
 
-    fun next(sequence: List<Int>?, chunk: Int): List<Int>
-    fun prev(sequence: List<Int>?, chunk: Int): List<Int>
-    fun generateBase(): List<Int>
+    fun next(sequence: List<BigInteger>?, chunk: Int): List<BigInteger>
+    fun prev(sequence: List<BigInteger>?, chunk: Int): List<BigInteger>
+    fun generateBase(): List<BigInteger>
 
 }

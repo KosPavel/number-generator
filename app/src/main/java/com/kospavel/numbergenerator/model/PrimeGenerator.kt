@@ -1,17 +1,19 @@
 package com.kospavel.numbergenerator.model
 
+import java.math.BigInteger
+
 class PrimeGenerator : Generator {
 
-    override fun next(seq: List<Int>?, chunk: Int): List<Int> { //todo ready
-        return if (seq != null && seq.isNotEmpty()) {
-            var prime = seq.last()
-            val result = mutableListOf<Int>()
+    override fun next(sequence: List<BigInteger>?, chunk: Int): List<BigInteger> { //todo ready
+        return if (sequence != null && sequence.isNotEmpty()) {
+            var prime = sequence.last()
+            val result = mutableListOf<BigInteger>()
             for (i in 0..chunk) {
                 while (true) {
-                    prime += 1
+                    prime += 1.toBigInteger()
                     var isPrime = true
-                    for (j in 2 until prime) {
-                        if (prime % j == 0) {
+                    for (j in 2 until prime.toInt()) {
+                        if (prime % j.toBigInteger() == 0.toBigInteger()) {
                             isPrime = false
                             break
                         }
@@ -28,19 +30,19 @@ class PrimeGenerator : Generator {
         }
     }
 
-    override fun prev(sequence: List<Int>?, chunk: Int): List<Int> { //todo ready
+    override fun prev(sequence: List<BigInteger>?, chunk: Int): List<BigInteger> { //todo ready
         return if (sequence != null) {
-            if (sequence[0] == 2) {
+            if (sequence[0] == 2.toBigInteger()) {
                 return emptyList()
             } else {
                 var prime = sequence[0]
-                val result = mutableListOf<Int>()
+                val result = mutableListOf<BigInteger>()
                 for (i in 0..chunk) {
                     while (true) {
-                        prime -= 1
+                        prime -= 1.toBigInteger()
                         var isPrime = true
-                        for (j in 2 until prime) {
-                            if (prime % j == 0) {
+                        for (j in 2 until prime.toInt()) {
+                            if (prime % j.toBigInteger() == 0.toBigInteger()) {
                                 isPrime = false
                                 break
                             }
@@ -50,7 +52,7 @@ class PrimeGenerator : Generator {
                         }
                         break
                     }
-                    if (prime == 2) {
+                    if (prime == 2.toBigInteger()) {
                         break
                     }
                 }
@@ -61,26 +63,10 @@ class PrimeGenerator : Generator {
         }
     }
 
-    override fun generateBase(): List<Int> {
-        val base = mutableListOf(2)
-        var prime = 2
-        for (i in 0..50) {
-            var isPrime = true
-            while (true) {
-                prime += 1
-                for (j in 2 until prime) {
-                    if (prime % j == 0) {
-                        isPrime = false
-                        break
-                    }
-                }
-                break
-            }
-            if (isPrime) {
-                base.add(prime)
-            }
+    override fun generateBase(): List<BigInteger> {
+        return listOf(2).map {
+            it.toBigInteger()
         }
-        return base
     }
 
     companion object {

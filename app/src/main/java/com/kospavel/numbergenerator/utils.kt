@@ -1,6 +1,7 @@
 package com.kospavel.numbergenerator
 
 import androidx.annotation.StringRes
+import java.math.BigInteger
 
 enum class SequenceType(@StringRes val nameId: Int) {
     PRIME(R.string.simple_numbers_tab_title),
@@ -8,16 +9,17 @@ enum class SequenceType(@StringRes val nameId: Int) {
 }
 
 data class Number(
-    var value: Int,
-    var white: Boolean,
+    var value: BigInteger,
+    var white: Boolean? = null,
     var loadNext: Boolean = false,
     var loadPrev: Boolean = false
-) : Content()
+)
+//    : Content()
 
 //class LoadNext : Content()
 //class LoadPrevious : Content()
 
-open class Content
+//open class Content
 
 class ChessColorResolver {
     private var count: Int = 0
@@ -30,10 +32,10 @@ class ChessColorResolver {
     }
 }
 
-fun MutableList<Content>.addLoads(): MutableList<Content> {
-    this.apply {
+//fun MutableList<Content>.addLoads(): MutableList<Content> {
+//    this.apply {
 //        add(0, LoadPrevious())
 //        add(LoadNext())
-    }
-    return this
-}
+//    }
+//    return this
+//}

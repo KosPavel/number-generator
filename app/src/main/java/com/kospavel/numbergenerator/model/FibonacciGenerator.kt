@@ -1,10 +1,12 @@
 package com.kospavel.numbergenerator.model
 
+import java.math.BigInteger
+
 class FibonacciGenerator : Generator {
 
-    override fun next(sequence: List<Int>?, chunk: Int): List<Int> { //todo ready
+    override fun next(sequence: List<BigInteger>?, chunk: Int): List<BigInteger> { //todo ready
         return if (sequence != null && sequence.isNotEmpty()) {
-            val result = mutableListOf<Int>()
+            val result = mutableListOf<BigInteger>()
             for (i in 0..chunk) {
                 when (result.size) {
                     0 -> {
@@ -26,19 +28,19 @@ class FibonacciGenerator : Generator {
         }
     }
 
-    override fun prev(sequence: List<Int>?, chunk: Int): List<Int> { //TODO ready
+    override fun prev(sequence: List<BigInteger>?, chunk: Int): List<BigInteger> { //TODO ready
         return if (sequence != null) {
-            if (sequence[0] == 1 && sequence[1] == 1) {
+            if (sequence[0] == 1.toBigInteger() && sequence[1] == 1.toBigInteger()) {
                 return emptyList()
             } else {
-                val result = mutableListOf<Int>()
+                val result = mutableListOf<BigInteger>()
                 for (i in 0..chunk) {
                     when (result.size) {
                         0 -> {
                             result.add(
                                 sequence[1] - sequence[0]
                             )
-                            if (sequence[0] == 1 && result[0] == 1) {
+                            if (sequence[0] == 1.toBigInteger() && result[0] == 1.toBigInteger()) {
                                 break
                             }
                         }
@@ -46,7 +48,7 @@ class FibonacciGenerator : Generator {
                             result.add(
                                 sequence[0] - result[0]
                             )
-                            if (result[0] == 1 && result[1] == 1) {
+                            if (result[0] == 1.toBigInteger() && result[1] == 1.toBigInteger()) {
                                 break
                             }
                         }
@@ -54,7 +56,7 @@ class FibonacciGenerator : Generator {
                             result.add(
                                 result.last() + result[result.lastIndex - 1]
                             )
-                            if (result.last() == 1 && result[result.lastIndex - 1] == 1) {
+                            if (result.last() == 1.toBigInteger() && result[result.lastIndex - 1] == 1.toBigInteger()) {
                                 break
                             }
                         }
@@ -67,14 +69,10 @@ class FibonacciGenerator : Generator {
         }
     }
 
-    override fun generateBase(): List<Int> {
-        val base = mutableListOf(1, 1, 2)
-        for (i in 0..50) {
-            base.add(
-                base.last() + base[base.lastIndex - 1]
-            )
+    override fun generateBase(): List<BigInteger> {
+        return listOf(1, 1, 2).map {
+            it.toBigInteger()
         }
-        return base
     }
 
     companion object {
