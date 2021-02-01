@@ -10,32 +10,19 @@ enum class SequenceType(@StringRes val nameId: Int) {
 
 data class Number(
     var value: BigInteger,
-    var white: Boolean? = null,
-    var loadNext: Boolean = false,
-    var loadPrev: Boolean = false
+    var white: Boolean? = true,
+    var loadNext: Boolean = false
 )
-//    : Content()
-
-//class LoadNext : Content()
-//class LoadPrevious : Content()
-
-//open class Content
 
 class ChessColorResolver {
-    private var count: Int = 0
+    private var count: Int = 1
+    private var paint = true
     fun isWhite(): Boolean {
         count += 1
         if (count > 2) {
+            paint = !paint
             count = 1
         }
-        return count % 2 == 0
+        return paint
     }
 }
-
-//fun MutableList<Content>.addLoads(): MutableList<Content> {
-//    this.apply {
-//        add(0, LoadPrevious())
-//        add(LoadNext())
-//    }
-//    return this
-//}

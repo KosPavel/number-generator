@@ -8,7 +8,7 @@ class PrimeGenerator : Generator {
         return if (sequence != null && sequence.isNotEmpty()) {
             var prime = sequence.last()
             val result = mutableListOf<BigInteger>()
-            for (i in 0..chunk) {
+            for (i in 1..chunk) {
                 while (true) {
                     prime += 1.toBigInteger()
                     var isPrime = true
@@ -20,8 +20,8 @@ class PrimeGenerator : Generator {
                     }
                     if (isPrime) {
                         result.add(prime)
+                        break
                     }
-                    break
                 }
             }
             return result
@@ -30,41 +30,8 @@ class PrimeGenerator : Generator {
         }
     }
 
-    override fun prev(sequence: List<BigInteger>?, chunk: Int): List<BigInteger> { //todo ready
-        return if (sequence != null) {
-            if (sequence[0] == 2.toBigInteger()) {
-                return emptyList()
-            } else {
-                var prime = sequence[0]
-                val result = mutableListOf<BigInteger>()
-                for (i in 0..chunk) {
-                    while (true) {
-                        prime -= 1.toBigInteger()
-                        var isPrime = true
-                        for (j in 2 until prime.toInt()) {
-                            if (prime % j.toBigInteger() == 0.toBigInteger()) {
-                                isPrime = false
-                                break
-                            }
-                        }
-                        if (isPrime) {
-                            result.add(prime)
-                        }
-                        break
-                    }
-                    if (prime == 2.toBigInteger()) {
-                        break
-                    }
-                }
-                return result
-            }
-        } else {
-            generateBase()
-        }
-    }
-
     override fun generateBase(): List<BigInteger> {
-        return listOf(2).map {
+        return listOf(2, 3).map {
             it.toBigInteger()
         }
     }

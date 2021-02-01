@@ -27,7 +27,7 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
         vm = ViewModelProvider(this, vmf).get(SequenceViewModel::class.java)
 
         val mainAdapter =
-            MainAdapter(loadNext = { vm.loadNext() }, loadPrevious = { vm.loadPrevious() })
+            MainAdapter(loadNext = { vm.loadNext() })
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = mainAdapter
@@ -35,8 +35,10 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
         }
 
         vm.items.observe(viewLifecycleOwner) {
-            mainAdapter.items = it
-            mainAdapter.notifyDataSetChanged()
+            binding.recyclerView.post {
+                mainAdapter.items = it
+                mainAdapter.notifyDataSetChanged()
+            }
         }
     }
 

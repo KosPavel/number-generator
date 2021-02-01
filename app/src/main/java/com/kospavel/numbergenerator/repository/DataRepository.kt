@@ -1,6 +1,5 @@
 package com.kospavel.numbergenerator.repository
 
-import com.kospavel.numbergenerator.Number
 import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.model.FibonacciGenerator
 import com.kospavel.numbergenerator.model.Generator
@@ -16,40 +15,9 @@ class DataRepository(type: SequenceType) {
         SequenceType.FIBONACCI -> FibonacciGenerator.get()
     }
 
-    fun loadNext(sequence: List<BigInteger>?, chunk: Int): Observable<List<Number>> {
-        return load(nextOrPrev = { sequenceGenerator.next(sequence, chunk) }, isNext = true)
-    }
-
-    fun loadPrev(sequence: List<BigInteger>?, chunk: Int): Observable<List<Number>> {
-        return load(nextOrPrev = { sequenceGenerator.prev(sequence, chunk) }, isNext = false)
-    }
-
-    private fun load(
-        nextOrPrev: () -> List<BigInteger>,
-        isNext: Boolean = true
-    ): Observable<List<Number>> {
+    fun loadNext(sequence: List<BigInteger>?, chunk: Int): Observable<List<BigInteger>> {
         return Observable.fromCallable {
-            val intList = nextOrPrev()
-            val result = if (isNext) {
-                intList.map {
-                    Number(it)
-                }
-            } else {
-                intList.map {
-                    Number(it)
-                }.reversed()
-            }
-            val base = sequenceGenerator.generateBase()
-            var setLoadPrev = true
-            for (el in base) {
-                if (!result.contains(el)) {
-                    setLoadPrev = false
-                }
-            }
-//            result[0].loadPrev = !intList.contains(sequenceGenerator.generateBase())
-            result[0].loadPrev = setLoadPrev
-            result.last().loadNext = true
-            result
+            sequenceGenerator.next(sequence, chunk)
         }.subscribeOn(Schedulers.computation())
     }
 
