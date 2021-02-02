@@ -1,51 +1,64 @@
 package com.kospavel.numbergenerator.vm
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.kospavel.numbergenerator.*
+import com.kospavel.numbergenerator.ChessColorResolver
 import com.kospavel.numbergenerator.Number
+import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.base.BaseViewModel
 import com.kospavel.numbergenerator.repository.DataRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.math.BigInteger
 
 class SequenceViewModel(type: SequenceType) : BaseViewModel() {
 
     private val repo = DataRepository(type)
-    private val _items = MutableLiveData<List<Content>>(emptyList())
-    val items = _items
+    private val _items = MutableLiveData<List<Number>>(emptyList())
+    val items: LiveData<List<Number>> = _items
 
-    fun loadMore() {
-        repo.loadMore().map<List<Content>> {
-            val result = mutableListOf<Content>()
-            var color = true
-            for (i in it) {
-                result.add(Number(i, color))
-                color = !color
+    fun loadNext() {
+        val oldItems = _items.value!!.toMutableList().also {
+            if (it.isNotEmpty()) {
+                it.last().loadNext = false
             }
-            result.add(LoadNext())
-            result
+        }
+        _items.value = oldItems
+        repo.loadNext(
+            makeSequence(_items.value),
+            CHUNK
+        ).map {
+            val numbersList = it.map { bigInt ->
+                Number(bigInt)
+            }
+            mutableListOf<Number>().apply {
+                addAll(oldItems)
+                addAll(numbersList)
+                last().loadNext = true
+            }
+        }.map {
+            val chessColorResolver = ChessColorResolver()
+            for (el in it) {
+                el.white = chessColorResolver.isWhite()
+            }
+            it
         }.observeOn(AndroidSchedulers.mainThread()).subscribeBy {
             _items.value = it
         }.addToDisposable()
     }
 
-    fun loadLess() {
-        repo.loadLess().map<List<Content>> {
-            val result = mutableListOf<Content>()
-            var color = true
-            for (i in it) {
-                result.add(Number(i, color))
-                color = !color
-            }
-            result.add(0, LoadPrevious())
-            result
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeBy {
-            _items.value = it
-        }.addToDisposable()
+    private fun makeSequence(contentList: List<Number>?): List<BigInteger>? {
+        return contentList?.map {
+            it.value
+        }
     }
 
     init {
-        loadMore()
+        loadNext()
+    }
+
+    companion object {
+        private const val CHUNK = 50
     }
 
 }

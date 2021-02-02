@@ -3,29 +3,22 @@ package com.kospavel.numbergenerator.repository
 import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.model.FibonacciGenerator
 import com.kospavel.numbergenerator.model.Generator
-import com.kospavel.numbergenerator.model.SimpleGenerator
+import com.kospavel.numbergenerator.model.PrimeGenerator
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableOnSubscribe
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.math.BigInteger
 
 class DataRepository(type: SequenceType) {
 
     private val sequenceGenerator: Generator = when (type) {
-        SequenceType.SIMPLE -> SimpleGenerator.get()
+        SequenceType.PRIME -> PrimeGenerator.get()
         SequenceType.FIBONACCI -> FibonacciGenerator.get()
     }
 
-    fun loadMore(): Observable<List<Int>> {
-        return Observable.create(ObservableOnSubscribe {
-            it.onNext(sequenceGenerator.next())
-            it.onComplete()
-        })
-    }
-
-    fun loadLess(): Observable<List<Int>> {
-        return Observable.create(ObservableOnSubscribe {
-            it.onNext(sequenceGenerator.prev())
-            it.onComplete()
-        })
+    fun loadNext(sequence: List<BigInteger>?, chunk: Int): Observable<List<BigInteger>> {
+        return Observable.fromCallable {
+            sequenceGenerator.next(sequence, chunk)
+        }.subscribeOn(Schedulers.computation())
     }
 
 }

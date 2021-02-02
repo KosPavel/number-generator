@@ -2,7 +2,8 @@ package com.kospavel.numbergenerator.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.kospavel.numbergenerator.R
 import com.kospavel.numbergenerator.SequenceType
 import com.kospavel.numbergenerator.base.BaseFragment
@@ -16,39 +17,40 @@ class NumbersFragment : BaseFragment<FragmentRecyclerViewBinding>(
 ) {
 
     private lateinit var vm: SequenceViewModel
+    private lateinit var vmf: SequenceViewModelFactory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val type: SequenceType = requireArguments().getSerializable(TYPE_KEY) as SequenceType
-        vm = SequenceViewModelFactory(type).create(SequenceViewModel::class.java)
 
-        val mainAdapter = MainAdapter(more = { vm.loadMore() }, less = { vm.loadLess() })
+        vmf = SequenceViewModelFactory(type)
+        vm = ViewModelProvider(this, vmf).get(SequenceViewModel::class.java)
+
+        val mainAdapter =
+            MainAdapter(loadNext = { vm.loadNext() })
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = mainAdapter
             setHasFixedSize(true)
         }
 
         vm.items.observe(viewLifecycleOwner) {
-            mainAdapter.items = it
-            mainAdapter.notifyDataSetChanged()
+            binding.recyclerView.post {
+                mainAdapter.items = it
+                mainAdapter.notifyDataSetChanged()
+            }
         }
     }
 
     companion object {
         private const val TYPE_KEY = "type"
-        private val instances = mutableMapOf<String, NumbersFragment>()
 
-        fun newFragment(type: SequenceType): NumbersFragment {
-            if (!instances.containsKey(type.name)) {
-                val instance = NumbersFragment().apply {
-                    arguments = Bundle().apply {
-                        putSerializable(TYPE_KEY, type)
-                    }
+        fun getFragment(type: SequenceType): NumbersFragment {
+            return NumbersFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(TYPE_KEY, type)
                 }
-                instances[type.name] = instance
             }
-            return instances[type.name]!!
         }
     }
 
